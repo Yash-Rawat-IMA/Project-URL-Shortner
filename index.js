@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-
+const path = require('path')
 const urlRoute = require('./routes/url')
 
 const URL = require('./models/url')
@@ -9,25 +9,32 @@ const { connectDB } = require('./connect')
 
 const port = 8001;
 
+app.set("view engine", "ejs");
+app.set("views", path.resolve('./views'));
+
 connectDB('mongodb://127.0.0.1:27017/url_shortner')
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.get('/', (req, res) => {
-    console.log(`Get Request`);
-    res.json({ msg: `Get Request received` });
+app.get('/', async(req, res) => {
+    console.log('Displaying using front-end')
+    const allURLs = await URL.find({});
+    res.render("home", {
+        urls: allURLs,
+        name: "Yash Rawat"
+      });
 })
 
 // Server side rendering -  but this will put all the load on the server to render even the front-end i.e. html, css and js part and is not scalable in long term. To overcome this we'll use templating engines like: "EJS", "PUG JS" and can store the front-end part in "view" folder
-app.get('/test', async(req, res)=>{
-    console.log(`Testing get request`);
-    const allURLs = await URL.find({});
-    const html = `<ol>
-    ${allURLs.map(url => `<h2><li>${url.redirectURL} - ${url.visitedHistory.length}</li></h2>`).join("")}
-    </ol>`;
-    res.send(html);
-})
+// app.get('/test', async(req, res)=>{
+//     console.log(`Testing get request`);
+//     const allURLs = await URL.find({});
+//     const html = `<ol>
+//     ${allURLs.map(url => `<h2><li>${url.redirectURL} - ${url.visitedHistory.length}</li></h2>`).join("")}
+//     </ol>`;
+//     res.send(html);
+// })
 
 app.use('/url', urlRoute);
 
