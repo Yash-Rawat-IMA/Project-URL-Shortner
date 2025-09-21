@@ -22,7 +22,6 @@ app.get('/', async(req, res) => {
     const allURLs = await URL.find({});
     res.render("home", {
         urls: allURLs,
-        name: "Yash Rawat"
       });
 })
 
