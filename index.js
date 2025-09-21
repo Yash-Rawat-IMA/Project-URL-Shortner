@@ -19,6 +19,16 @@ app.get('/', (req, res) => {
     res.json({ msg: `Get Request received` });
 })
 
+// Server side rendering -  but this will put all the load on the server to render even the front-end i.e. html, css and js part and is not scalable in long term. To overcome this we'll use templating engines like: "EJS", "PUG JS" and can store the front-end part in "view" folder
+app.get('/test', async(req, res)=>{
+    console.log(`Testing get request`);
+    const allURLs = await URL.find({});
+    const html = `<ol>
+    ${allURLs.map(url => `<h2><li>${url.redirectURL} - ${url.visitedHistory.length}</li></h2>`).join("")}
+    </ol>`;
+    res.send(html);
+})
+
 app.use('/url', urlRoute);
 
 app.listen(port, () => console.log(`Server Started at Port: ${port}`));
