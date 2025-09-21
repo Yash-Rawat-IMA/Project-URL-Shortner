@@ -1,9 +1,0 @@
-Make a short custom url from a given url.
-Also keep track of total visits/clicks on the url
-
-Routes:
-1. POST/URL - generates a new short URL and returns the shortened URL in the format example.com/random-id
-
-2. GET/:id - Redirects the user to the original URL
-
-3. GET/URL/analytics/:id - Returns the clicks for the provided short id
