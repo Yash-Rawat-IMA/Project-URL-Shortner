@@ -19,17 +19,28 @@ app.use(express.json())
 app.get('/', (req, res) => {
     res.send('URL Shortener API is running ');
 });
+
+app.get('/test', (req,res) => {
+    console.log(`Server Test`);
+    return res.end(`<body style="background-color:black;"><h1 style="background-color:grey; color: black;">Hi! from Server</h1></body>`)
+})
+
 app.use('/url', urlRoute);
 
-app.get('/url/:shortID', async (req, res) => {
+app.get('/r/:shortID', async (req, res) => {
     try {
         const shortID = req.params.shortID;
         console.log("[GET] Requested shortID:", shortID);
-
+        console.log("[GET] Requested type of shortID:",typeof shortID);
         const entry = await URL.findOneAndUpdate(
-            { shortID },
-            { $push: { visitHistory: { timestamp: Date.now() } } },
-            { new: true }
+            {shortID},
+            {
+                $push: {
+                    visitHistory: {
+                        timestamp: Date.now()
+                    },
+                }
+            }
         );
 
         if (!entry) {
