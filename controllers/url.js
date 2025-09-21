@@ -48,8 +48,12 @@ async function redirectToURL(req, res) {
 async function deleteURL(req, res) {
     const shortID = req.params.shortID;
     const entry = await URL.findOneAndDelete({shortID});
+    if(!entry){
+        console.log(`No entry found with short ID: ${shortID}`);
+        return res.send({short_id:`${shortID}`, err: `No entry found`})
+    }
     console.log(`URL: ${entry.redirectURL} with short ID: ${entry.shortID}  ${shortID} deleted`);
-    return res.json({url: `${entry.redirectURL}`}).json({short_id: `${entry.shortID} ${shortID}`}).json({msg: `Deleted`});
+    return res.json({url: `${entry.redirectURL}`, short_id: `${entry.shortID}`, msg: `Deleted`});
 }
 
 async function visitsOnShortID(req, res) {
