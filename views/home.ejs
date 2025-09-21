@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <style>
+        body{
+            background-color: #212121;
+            color: #fff;
+        }
+        h1{
+            padding: 10px;
+            margin: 10px;
+        }
+        ul{
+            list-style: none;
+        }
+        a{
+            color: aqua;
+        }
+    </style>
+</head>
+<body>
+    
+    <h1>Hey! from server</h1>
+    <ul>
+    <% urls.forEach(url => { %>
+     <h2><li><%= url.redirectURL %>- <a href="http://localhost:8001/url/<%= url.shortID %>" target="_blank"><%= url.shortID%></a> - <%= url.visitedHistory.length %></li></h2>
+    <% }) %>
+    </ul>
+</body>
+</html>
